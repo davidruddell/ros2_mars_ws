@@ -1,0 +1,27 @@
+[0.760s] Invoking command in '/home/david/ros2_mars_ws/src/mars_rover_control': CONDA_PROMPT_MODIFIER=(base) PYTHONPATH=/home/david/ros2_mars_ws/build/mars_rover_control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/david/ros2_mars_ws/install/mars_rover_control/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/mars_rover_control build --build-base /home/david/ros2_mars_ws/build/mars_rover_control/build install --record /home/david/ros2_mars_ws/build/mars_rover_control/install.log --single-version-externally-managed install_data
+[1.027s] running egg_info
+[1.027s] writing ../../build/mars_rover_control/mars_rover_control.egg-info/PKG-INFO
+[1.027s] writing dependency_links to ../../build/mars_rover_control/mars_rover_control.egg-info/dependency_links.txt
+[1.028s] writing entry points to ../../build/mars_rover_control/mars_rover_control.egg-info/entry_points.txt
+[1.028s] writing requirements to ../../build/mars_rover_control/mars_rover_control.egg-info/requires.txt
+[1.028s] writing top-level names to ../../build/mars_rover_control/mars_rover_control.egg-info/top_level.txt
+[1.030s] reading manifest file '../../build/mars_rover_control/mars_rover_control.egg-info/SOURCES.txt'
+[1.032s] writing manifest file '../../build/mars_rover_control/mars_rover_control.egg-info/SOURCES.txt'
+[1.032s] running build
+[1.032s] running build_py
+[1.032s] copying mars_rover_control/obstacle_detector.py -> /home/david/ros2_mars_ws/build/mars_rover_control/build/lib/mars_rover_control
+[1.033s] running install
+[1.034s] running install_lib
+[1.036s] copying /home/david/ros2_mars_ws/build/mars_rover_control/build/lib/mars_rover_control/obstacle_detector.py -> /home/david/ros2_mars_ws/install/mars_rover_control/lib/python3.10/site-packages/mars_rover_control
+[1.037s] byte-compiling /home/david/ros2_mars_ws/install/mars_rover_control/lib/python3.10/site-packages/mars_rover_control/obstacle_detector.py to obstacle_detector.cpython-310.pyc
+[1.038s] running install_data
+[1.038s] copying models/mars_world.sdf -> /home/david/ros2_mars_ws/install/mars_rover_control/share/mars_rover_control/models
+[1.039s] running install_egg_info
+[1.041s] removing '/home/david/ros2_mars_ws/install/mars_rover_control/lib/python3.10/site-packages/mars_rover_control-0.0.0-py3.10.egg-info' (and everything under it)
+[1.042s] Copying ../../build/mars_rover_control/mars_rover_control.egg-info to /home/david/ros2_mars_ws/install/mars_rover_control/lib/python3.10/site-packages/mars_rover_control-0.0.0-py3.10.egg-info
+[1.043s] running install_scripts
+[1.063s] Installing motion_command script to /home/david/ros2_mars_ws/install/mars_rover_control/lib/mars_rover_control
+[1.063s] Installing obstacle_detector script to /home/david/ros2_mars_ws/install/mars_rover_control/lib/mars_rover_control
+[1.064s] Installing spawn_entities script to /home/david/ros2_mars_ws/install/mars_rover_control/lib/mars_rover_control
+[1.064s] writing list of installed files to '/home/david/ros2_mars_ws/build/mars_rover_control/install.log'
+[1.095s] Invoked command in '/home/david/ros2_mars_ws/src/mars_rover_control' returned '0': CONDA_PROMPT_MODIFIER=(base) PYTHONPATH=/home/david/ros2_mars_ws/build/mars_rover_control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/david/ros2_mars_ws/install/mars_rover_control/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/mars_rover_control build --build-base /home/david/ros2_mars_ws/build/mars_rover_control/build install --record /home/david/ros2_mars_ws/build/mars_rover_control/install.log --single-version-externally-managed install_data

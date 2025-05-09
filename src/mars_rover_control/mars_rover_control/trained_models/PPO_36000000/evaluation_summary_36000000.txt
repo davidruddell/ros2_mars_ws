@@ -1,0 +1,7 @@
+Episode Termination Summary
+reached_target : 90
+collision      : 5
+out_of_bounds  : 4
+timeout        : 1
+
+Average episode length: 37.9 steps

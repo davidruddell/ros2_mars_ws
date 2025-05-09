@@ -1,0 +1,178 @@
+# Mars Rover ROS 2 Workspace
+
+This ROS 2 workspace contains the simulation and control nodes for a differential drive Mars rover navigating a Gazebo environment using a trained reinforcement learning model.
+
+## Structure
+
+- `mars_rover_control/`
+  - `motion_command.py` — Uses PPO model to command the rover.
+  - `obstacle_detector.py` — Publishes distance and direction to closest obstacle.
+  - `launch/rover_launch.py` — Launches all required nodes and bridges.
+
+## Requirements
+
+- ROS 2 Humble
+- Ignition Gazebo
+- `ros_gz_bridge` (for ROS ↔ Gazebo communication)
+
+## Usage
+
+colcon build --packages-select mars_rover_control
+source install/setup.bash
+./start_everything.sh
+
+
+
+Final Project Assignment: Autonomous Rover on Mars
+Robotic Systems
+Spring 2025
+1 Project Overview
+In this final project, students will design, train, and validate an autonomous control system
+for a rover operating on the surface of Mars. The rover must navigate autonomously toward
+a designated target of scientific interest while avoiding collisions with hazardous boulders.
+The rover is equipped with a 360-degree LiDAR system, providing real-time updates
+(at 1 Hz) on the position of the nearest obstacle. Combined with knowledge of the rover’s
+current and target positions, this information must be used onboard to determine the optimal
+velocity command for each time step.
+2 Project Phases
+The development of the onboard control law involves the following phases:
+1. Training Phase: Train a fully-connected neural network using reinforcement learning
+in a simplified simulation of the rover and environment.
+2. Deployment and Validation Phase: Deploy the trained network in a high-fidelity
+ROS+Gazebo environment to evaluate its performance.
+3 Training
+Using the Python libraries Stable-Baselines3 and Gymnasium, train a fully-connected neural
+network (MLP) via Reinforcement Learning with the Proximal Policy Optimization (PPO)
+algorithm to solve the rover navigation task.
+3.1 RL Environment Specifications
+When modeling the environment as a Markov decision process (MDP) and implementing it
+as a Gymnasium environment, use the following simplifications:
+• The rover moves within a 2-dimensional 25 × 25 m square map and is represented as
+a 2 × 2 m square.
+1
+• The rover position is defined by the continuous coordinates x = [x, y] of its geometric
+center, with x = [0, 0] indicating the bottom-left corner of the map
+• The target region is a 2 × 2 m square. The rover is considered to have reached the
+target when its center falls inside this region
+• There are 6 circular boulders (radius 1 m) randomly placed on the map. To avoid
+collisions, the rover’s center must remain at least 1 m away from any boulder’s edge
+• At the start of each episode, the rover, target, and boulders are randomly positioned
+on the map, subject to the following constraints (all indicated distances are measured
+between objects’ centers):
+– The target has to be more than 12.5 m away from the initial rover position
+– Each boulder has to be more than 6.8 m away from every other object (other
+boulders, target, and initial rover position)
+• The observation that is provided to the neural network consists of:
+1. Current rover position x = [x, y]
+2. Target position xT = [xT , yT ]
+3. Current distance d between the rover and the nearest boulder, measured between
+the rover center and the boulder edge
+4. The unitary vector d = [dx, dy] indicating the direction of the nearest boulder
+center from the rover center
+• The action that is returned by the neural network consists of:
+1. The unitary vector u = [ux, uy] indicating the direction of motion of the rover for
+the next time step
+• The rover moves, during each time step, with a constant velocity v = 0.5 m/s. Then,
+the next position of the rover can be determined as:
+x
+′ = x + vu∆t
+with ∆t = 1 s each time step length.
+• The simulation runs in 1-second time steps and terminates whenever one of the following is true:
+– The rover reaches the target
+– The rover leaves the map
+– A boulder is hit
+– 200 seconds pass
+2
+3.2 Student-Defined Parameters
+The students must design a suitable reward function that enables the rover to reach the target
+as quickly as possible while avoiding the boulders. The architecture of the neural network, as
+well as the values of the hyperparameters of the PPO algorithm and the number of training
+steps, must also be suitably selected by the students to optimize the effectiveness of the
+training process. At the end of the training, the trained neural network must be saved as a
+zip file using the model.save(‘path-to-saved-model’) function of the Stable-Baselines3
+library.
+4 Simulation Environment
+4.1 Gazebo SDF Requirements
+The simulation must be defined via an SDF file and must include:
+• Gravity acceleration set to 3.73 m/s2
+.
+• A ground plane measuring 25 × 25 meters, with one corner at (0, 0) and centered at
+(12.5, 12.5).
+• A 3-wheel rover identical to the one presented in ROS Lecture 5 (same links, joints, dimensions, mass, and inertia). Include DiffDrive and PosePublisher plugins (publish
+rate at 1 Hz).
+• A 2 × 2 meter static target plane located 0.02 meters above the ground, centered at
+the specified target coordinates.
+• Six static obstacles modeled as cylinders with radius 1 meter and height 2 meters,
+placed at specified coordinates.
+The initial position of the rover, the target, and the obstacles must adhere to the same
+constraints as in the training environment.
+5 ROS Graph
+5.1 Nodes
+In the ROS graph, the following nodes must be implemented:
+• motion command.py:
+– Inputs: rover’s pose, target position, distance and direction of the nearest obstacle.
+– Outputs: velocity commands (linear and angular) for the differential drive controller.
+• obstacle detector.py:
+3
+– Inputs: rover’s position and obstacle positions.
+– Outputs: distance and direction of the nearest obstacle.
+Note that the target position and the positions of the obstacles are fixed and known in
+advance. Other quantities (e.g., rover’s position) are read by subscribing to the appropriate
+topics.
+5.2 Topics and Bridges
+5.2.1 ROS Topics
+The following topics must be implemented:
+• /direction of closest obstacle (geometry msgs/Pose): published by obstacle detector.py,
+subscribed by motion command.py.
+• /distance of closest obstacle (std msgs/Float32): published by obstacle detector.py,
+subscribed by motion command.py.
+5.2.2 ROS-Gazebo Bridges:
+The following bridges must be implemented:
+• /model/rover blue/pose (geometry msgs/Pose): used to read the rover’s position
+from Gazebo.
+• /rover blue cmd vel (geometry msgs/Twist): used to send velocity commands to
+the differential drive controller.
+5.3 Update Frequency
+All publishers and subscribers should operate at 1 Hz (i.e., one update per second).
+6 Neural Network Control Implementation
+The neural network action should be computed by the motion command.py node, which
+should read the rover’s position, the target position, and the distance and direction of the
+nearest obstacle.
+The neural network action could be a 3-dimensional velocity vector, with the x and y
+components representing the linear velocity in the rover frame. However, the differential
+drive controller requires a linear and an angular velocity command, so the neural network
+action should be converted to the required format. Multiple approaches could be used to
+convert the neural network action to the required format, here we propose one:
+1. motion command.py reads the rover’s and target’s positions, and the closest obstacle
+data.
+4
+2. It evaluates the neural network to produce a 3D velocity vector.
+3. It computes the angle between the rover’s current orientation and the direction of the
+velocity vector.
+4. If this angle is below a threshold (e.g., 1°), the rover moves forward with the velocity
+vector’s magnitude. Otherwise, to reduce the angle error (ideally to zero) at the next
+time step, it rotates in place with angular velocity set to the angle error divided by
+the time step (1 second) or the maximum angular velocity (whichever is smaller), and
+repeats the process from Step 3.
+5. If the rover’s center of mass is within the 2 × 2 meter square centered in the target, it
+stops, otherwise it repeats from Step 1.
+6.1 Actuation Constraints
+• Maximum linear velocity: 0.5 m/s.
+• Maximum angular velocity: 10◦/s.
+7 Deliverables
+• Source code of the entire Reinforcement Learning workspace, inclusive of the Gymnasium environment, the script used to train the neural network, and a script to evaluate
+the trained neural network performance on that environment
+• Trained neural network model
+• Gazebo SDF file
+• Source code of the entire ROS workspace
+• TXT file generated by the motion command.py with the coordinates of the rover, the
+orientation of the rover, the neural network output velocity direction, the direction of
+the closest obstacle, the distance to the closest obstacle, and the distance to the target
+at each time step.
+• Plot of the rover’s trajectory (x, y) in the Gazebo environment.
+• Plot of the rover’s orientation in the Gazebo environment over time compared to the
+neural network output velocity direction.
+• Plot of the distance to the closest obstacle in the Gazebo environment over time.
+• Final report discussing training methodology, simulation results, the ROS graph structure.
+• Video of the rover navigating in the Gazebo environment without collisions.
+5

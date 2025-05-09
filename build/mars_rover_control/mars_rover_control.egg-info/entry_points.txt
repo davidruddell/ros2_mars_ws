@@ -1,0 +1,4 @@
+[console_scripts]
+motion_command = mars_rover_control.motion_command:main
+obstacle_detector = mars_rover_control.obstacle_detector:main
+

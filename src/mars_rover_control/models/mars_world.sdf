@@ -1,0 +1,97 @@
+<?xml version="1.0" ?>
+<sdf version="1.9">
+  <world name="mars_world">
+
+    <gravity>0 0 -3.73</gravity>
+
+    <physics name="default_physics" type="ode">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+
+    <scene>
+      <ambient>0.8 0.8 0.8 1</ambient>
+      <background>0.1 0.1 0.1 1</background>
+      <light>0</light>
+    </scene>
+
+    <!-- Ground plane -->
+    <model name="mars_ground">
+      <static>true</static>
+      <pose>12.5 12.5 0 0 0 0</pose>
+      <link name="ground_link">
+        <collision name="collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>25 25</size>
+            </plane>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>25 25</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0.8 0.4 0.1 1</ambient>
+            <diffuse>0.8 0.4 0.1 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Rover -->
+    <include>
+      <uri>model://rover_blue</uri>
+      <pose>5.0 2.5 0 0 0 0</pose>
+    </include>
+
+    <!-- Target Plane -->
+    <include>
+      <uri>model://target_plane</uri>
+      <pose>19.0 21.0 0.02 0 0 0</pose>
+    </include>
+
+    <!-- Boulders -->
+    <include>
+      <uri>model://boulder</uri>
+      <name>boulder_1</name>
+      <pose>5 10 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://boulder</uri>
+      <name>boulder_2</name>
+      <pose>3 18 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://boulder</uri>
+      <name>boulder_3</name>
+      <pose>16 4 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://boulder</uri>
+      <name>boulder_4</name>
+      <pose>12 14 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://boulder</uri>
+      <name>boulder_5</name>
+      <pose>23 10 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://boulder</uri>
+      <name>boulder_6</name>
+      <pose>11 22 0 0 0 0</pose>
+    </include>
+
+  </world>
+</sdf>
